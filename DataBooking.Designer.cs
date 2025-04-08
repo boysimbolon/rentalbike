@@ -140,9 +140,10 @@
             label2.AutoSize = true;
             label2.Location = new Point(450, 73);
             label2.Name = "label2";
-            label2.Size = new Size(28, 15);
+            label2.Size = new Size(60, 15);
             label2.TabIndex = 48;
-            label2.Text = "Jam";
+            label2.Text = "Lama Jam";
+            label2.Click += label2_Click;
             // 
             // label5
             // 

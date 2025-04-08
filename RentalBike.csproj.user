@@ -4,5 +4,8 @@
     <Compile Update="DataBooking.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Motor.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

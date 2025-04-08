@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rental Motor App</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-5 bg-light">
+
+    <div id="app" class="container">
+        <h1 class="mb-4">Rental Motor App</h1>
+
+        <!-- LOGIN SECTION -->
+        <div v-if="!isLoggedIn">
+            <h3>Login</h3>
+            <form @submit.prevent="login">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" v-model="email" class="form-control" required>
+                </div>
+                <button class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <!-- MAIN SECTION -->
+        <div v-else>
+            <h4>Halo, {{ email }}</h4>
+            <button class="btn btn-danger btn-sm mb-3" @click="logout">Logout</button>
+
+            <!-- FORM BOOKING -->
+            <div class="card mb-4">
+                <div class="card-header">Form Booking Motor</div>
+                <div class="card-body">
+                    <form @submit.prevent="submitBooking">
+                        <div class="mb-3">
+                            <label>Nama:</label>
+                            <input v-model="bookingForm.NamaPemesan" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>No HP:</label>
+                            <input v-model="bookingForm.NoHpPemesan" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Pilih Motor:</label>
+                            <select v-model="bookingForm.MotorId" class="form-select" required>
+                                <option value="">-- Pilih Motor --</option>
+                                <option v-for="motor in motors" :key="motor.id" :value="motor.id">
+                                    {{ motor.namaMotor }} - {{ motor.platMotor }} ({{ motor.hargaSewa }} /jam)
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Tanggal Rental:</label>
+                            <input type="datetime-local" v-model="bookingForm.RentalDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Lama (jam):</label>
+                            <input type="number" v-model="bookingForm.LamaJam" class="form-control" required>
+                        </div>
+                        <button class="btn btn-success">Submit Booking</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- HISTORY BOOKING -->
+            <div class="card">
+                <div class="card-header">Riwayat Booking Anda</div>
+                <div class="card-body">
+                    <ul class="list-group" v-if="bookings.length">
+                        <li class="list-group-item" v-for="b in bookings" :key="b.id">
+                            <strong>{{ b.motor?.namaMotor }}</strong> |
+                            {{ b.rentalDate }} ({{ b.lamaJam }} jam) - Status: {{ b.rentalStatus }}
+                        </li>
+                    </ul>
+                    <div v-else>Belum ada data booking.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      email: '',
+      isLoggedIn: false,
+      bookingForm: {
+        NamaPemesan: '',
+        EmailPemesan: '',
+        NoHpPemesan: '',
+        MotorId: '',
+        RentalDate: '',
+        LamaJam: '',
+        RentalStatus: 'Pending'
+      },
+      motors: [],
+      bookings: []
+    };
+  },
+  methods: {
+    login() {
+      this.isLoggedIn = true;
+      this.bookingForm.EmailPemesan = this.email;
+      this.getMotors();
+      this.getBookings();
+    },
+    logout() {
+      this.isLoggedIn = false;
+      this.email = '';
+      this.bookings = [];
+    },
+    getMotors() {
+      axios.get('http://localhost:5000/api/Motor')
+        .then(res => this.motors = res.data)
+        .catch(err => alert("Gagal ambil data motor"));
+    },
+    getBookings() {
+      axios.get('http://localhost:5000/api/DataBooking')
+        .then(res => {
+          // filter hanya milik user ini
+          this.bookings = res.data.filter(b => b.emailPemesan === this.email);
+        })
+        .catch(err => console.log(err));
+    },
+    submitBooking() {
+      axios.post('http://localhost:5000/api/DataBooking', this.bookingForm)
+        .then(res => {
+          alert('Booking berhasil!');
+          this.getBookings();
+          // reset form (kecuali email)
+          this.bookingForm.NamaPemesan = '';
+          this.bookingForm.NoHpPemesan = '';
+          this.bookingForm.MotorId = '';
+          this.bookingForm.RentalDate = '';
+          this.bookingForm.LamaJam = '';
+        })
+        .catch(err => alert('Gagal melakukan booking'));
+    }
+  }
+}).mount('#app');
+    </script>
+
+</body>
+</html>

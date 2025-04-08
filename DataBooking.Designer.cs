@@ -28,31 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            produk = new Button();
+            motor = new Button();
             txt_no_telepon = new TextBox();
             txt_email = new TextBox();
-            data_booking = new ListView();
+            data_rental = new ListView();
             btn_update = new Button();
             txt_nama = new TextBox();
             label4 = new Label();
             label3 = new Label();
             label1 = new Label();
-            txt_produk = new TextBox();
+            txt_lama_jam = new TextBox();
             txt_date = new TextBox();
             label2 = new Label();
             label5 = new Label();
             nama_ = new Label();
             status = new ComboBox();
+            btn_save = new Button();
+            btn_delete = new Button();
+            listMotor = new ComboBox();
+            label6 = new Label();
             SuspendLayout();
             // 
-            // produk
+            // motor
             // 
-            produk.Location = new Point(706, 398);
-            produk.Name = "produk";
-            produk.Size = new Size(80, 35);
-            produk.TabIndex = 45;
-            produk.Text = "Produk";
-            produk.UseVisualStyleBackColor = true;
+            motor.Location = new Point(706, 403);
+            motor.Name = "motor";
+            motor.Size = new Size(80, 35);
+            motor.TabIndex = 45;
+            motor.Text = "Motor";
+            motor.UseVisualStyleBackColor = true;
+            motor.Click += motor_Click;
             // 
             // txt_no_telepon
             // 
@@ -68,23 +73,24 @@
             txt_email.Size = new Size(254, 23);
             txt_email.TabIndex = 43;
             // 
-            // data_booking
+            // data_rental
             // 
-            data_booking.Location = new Point(12, 182);
-            data_booking.Name = "data_booking";
-            data_booking.Size = new Size(774, 205);
-            data_booking.TabIndex = 40;
-            data_booking.UseCompatibleStateImageBehavior = false;
-            data_booking.View = View.Details;
+            data_rental.Location = new Point(12, 187);
+            data_rental.Name = "data_rental";
+            data_rental.Size = new Size(774, 205);
+            data_rental.TabIndex = 40;
+            data_rental.UseCompatibleStateImageBehavior = false;
+            data_rental.View = View.Details;
             // 
             // btn_update
             // 
-            btn_update.Location = new Point(700, 138);
+            btn_update.Location = new Point(599, 138);
             btn_update.Name = "btn_update";
             btn_update.Size = new Size(80, 35);
             btn_update.TabIndex = 38;
-            btn_update.Text = "Save";
+            btn_update.Text = "Update";
             btn_update.UseVisualStyleBackColor = true;
+            btn_update.Click += btn_update_Click;
             // 
             // txt_nama
             // 
@@ -119,14 +125,13 @@
             label1.Size = new Size(90, 15);
             label1.TabIndex = 33;
             label1.Text = "Nama Pemesan";
-            label1.Click += label1_Click;
             // 
-            // txt_produk
+            // txt_lama_jam
             // 
-            txt_produk.Location = new Point(549, 65);
-            txt_produk.Name = "txt_produk";
-            txt_produk.Size = new Size(231, 23);
-            txt_produk.TabIndex = 50;
+            txt_lama_jam.Location = new Point(549, 65);
+            txt_lama_jam.Name = "txt_lama_jam";
+            txt_lama_jam.Size = new Size(231, 23);
+            txt_lama_jam.TabIndex = 50;
             // 
             // txt_date
             // 
@@ -143,16 +148,15 @@
             label2.Size = new Size(60, 15);
             label2.TabIndex = 48;
             label2.Text = "Lama Jam";
-            label2.Click += label2_Click;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Location = new Point(450, 112);
             label5.Name = "label5";
-            label5.Size = new Size(86, 15);
+            label5.Size = new Size(75, 15);
             label5.TabIndex = 47;
-            label5.Text = "Booking Status";
+            label5.Text = "Rental Status";
             // 
             // nama_
             // 
@@ -166,54 +170,100 @@
             // status
             // 
             status.FormattingEnabled = true;
-            status.Location = new Point(549, 112);
+            status.Location = new Point(549, 109);
             status.Name = "status";
             status.Size = new Size(121, 23);
             status.TabIndex = 55;
+            // 
+            // btn_save
+            // 
+            btn_save.BackColor = Color.DarkGreen;
+            btn_save.Location = new Point(488, 138);
+            btn_save.Name = "btn_save";
+            btn_save.Size = new Size(80, 35);
+            btn_save.TabIndex = 56;
+            btn_save.Text = "Save";
+            btn_save.UseVisualStyleBackColor = false;
+            btn_save.Click += btn_save_Click;
+            // 
+            // btn_delete
+            // 
+            btn_delete.BackColor = Color.IndianRed;
+            btn_delete.Location = new Point(700, 138);
+            btn_delete.Name = "btn_delete";
+            btn_delete.Size = new Size(80, 35);
+            btn_delete.TabIndex = 57;
+            btn_delete.Text = "Delete";
+            btn_delete.UseVisualStyleBackColor = false;
+            btn_delete.Click += btn_delete_Click;
+            // 
+            // listMotor
+            // 
+            listMotor.FormattingEnabled = true;
+            listMotor.Location = new Point(170, 145);
+            listMotor.Name = "listMotor";
+            listMotor.Size = new Size(254, 23);
+            listMotor.TabIndex = 59;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(47, 148);
+            label6.Name = "label6";
+            label6.Size = new Size(40, 15);
+            label6.TabIndex = 58;
+            label6.Text = "Motor";
             // 
             // DataBooking
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(listMotor);
+            Controls.Add(label6);
+            Controls.Add(btn_delete);
+            Controls.Add(btn_save);
             Controls.Add(status);
-            Controls.Add(txt_produk);
+            Controls.Add(txt_lama_jam);
             Controls.Add(txt_date);
             Controls.Add(label2);
             Controls.Add(label5);
             Controls.Add(nama_);
-            Controls.Add(produk);
+            Controls.Add(motor);
             Controls.Add(txt_no_telepon);
             Controls.Add(txt_email);
-            Controls.Add(data_booking);
+            Controls.Add(data_rental);
             Controls.Add(btn_update);
             Controls.Add(txt_nama);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label1);
             Name = "DataBooking";
-            Text = "Booking";
+            Text = "Data Booking";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button produk;
+        private Button motor;
         private TextBox txt_no_telepon;
         private TextBox txt_email;
-        private ListView data_booking;
+        private ListView data_rental;
         private Button btn_update;
         private TextBox txt_nama;
         private Label label4;
         private Label label3;
         private Label label1;
-        private TextBox txt_produk;
+        private TextBox txt_lama_jam;
         private TextBox txt_date;
         private Label label2;
         private Label label5;
         private Label nama_;
         private ComboBox status;
-
+        private Button btn_save;
+        private Button btn_delete;
+        private ComboBox listMotor;
+        private Label label6;
     }
 }
